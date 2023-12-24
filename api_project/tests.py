@@ -23,6 +23,11 @@ class MyAppTests(unittest.TestCase):
         response = self.app.get("/clients/3")
         self.assertEqual(response.status_code, 200)
         self.assertTrue("Sybila Gleave" in response.data.decode())
+    
+    def test_getclient_address_by_client(self):
+        response = self.app.get("/clients/4/clientaddress")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("Tagopia" in response.data.decode())
 
 
 if __name__ == "__main__":
