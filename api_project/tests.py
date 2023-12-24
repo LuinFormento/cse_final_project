@@ -11,13 +11,18 @@ class MyAppTests(unittest.TestCase):
 
     def test_index_page(self):
         response = self.app.get("/")
-        self.assertEqual(response.status_code, 10)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data.decode(), "<p>Hello, World!</p>")
 
-    def test_getactors(self):
+    def test_getclients(self):
         response = self.app.get("/clients")
-        self.assertEqual(response.status_code, 10)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue("Reynard Surmon" in response.data.decode())
+
+    def test_getclients_by_id(self):
+        response = self.app.get("/clients/3")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("Sybila Gleave" in response.data.decode())
 
 
 if __name__ == "__main__":
