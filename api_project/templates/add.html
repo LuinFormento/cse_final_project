@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Client</title>
+</head>
+<body>
+    <h1>Add Client</h1>
+    <form action="/submit" method="post">
+        
+        <label for="client_name">Client's Name: </label>
+        <input type="text" id="client_name" name="client_name"><br><br>
+
+        <label for="client_from_date">Client's Date Inquire: </label>
+        <input type="date" id="client_from_date" name="client_from_date"><br><br>
+
+        <label for="kpi_avg_billable_rate">KPI Average Billable Rate(%): </label>
+        <input type="number" id="kpi_avg_billable_rate" name="kpi_avg_billable_rate"><br><br>
+
+        <label for="kpi_billing_to_date">KPI Billing Date: </label>
+        <input type="date" id="kpi_billing_to_date" name="kpi_billing_to_date"><br><br>
+
+        <label for="kpi_client_project_count">KPI Client's Project Count: </label>
+        <input type="number" id="kpi_client_project_count" name="kpi_client_project_count"><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
