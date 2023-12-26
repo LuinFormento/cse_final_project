@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Client Details</title>
+</head>
+<body>
+    <h1>Edit Client Details</h1>
+    <form method="post" action="/edit/{{ client.client_id }}">
+        <label for="new_client_name">Client Name:</label>
+        <input type="text" id="new_client_name" name="new_client_name" value="{{ client.client_name }}"><br><br>
+        
+        <label for="new_client_from_date">Client From Date:</label>
+        <input type="date" id="new_client_from_date" name="new_client_from_date" value="{{ client.client_from_date }}"><br><br>
+        
+        <label for="new_kpi_avg_billable_rate">KPI Avg Billable Rate:</label>
+        <input type="number" id="new_kpi_avg_billable_rate" name="new_kpi_avg_billable_rate" value="{{ client.kpi_avg_billable_rate }}"><br><br>
+        
+        <label for="new_kpi_billing_to_date">KPI Billing To Date:</label>
+        <input type="date" id="new_kpi_billing_to_date" name="new_kpi_billing_to_date" value="{{ client.kpi_billing_to_date }}"><br><br>
+        
+        <label for="new_kpi_client_project_count">KPI Client Project Count:</label>
+        <input type="number" id="new_kpi_client_project_count" name="new_kpi_client_project_count" value="{{ client.kpi_client_project_count }}"><br><br>
+        
+        <input type="submit" value="Save Changes">
+    </form>
+</body>
+</html>

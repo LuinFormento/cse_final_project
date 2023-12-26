@@ -52,34 +52,57 @@ def submit():
         
         return redirect(url_for('show_clients'))
 
-# @app.route("/clients", methods=["GET"])
-# def get_clients():
-#     data = data_fetch("""select * from clients""")
-#     return make_response(jsonify(data), 200)
 
-# @app.route("/clients/<int:id>", methods=["GET"])
-# def get_client_by_id(id):
-#     data = data_fetch("""SELECT * FROM clients where client_id= {}""".format(id))
-#     return make_response(jsonify(data), 200)
+@app.route("/edit/<int:client_id>", methods=["GET", "POST"])
+def edit_client(client_id):
+    cur = mysql.connection.cursor()
+    
+    if request.method == "POST":
+        new_client_name = request.form["new_client_name"]
+        new_client_from_date = request.form["new_client_from_date"]
+        new_kpi_avg_billable_rate = request.form["new_kpi_avg_billable_rate"]
+        new_kpi_billing_to_date = request.form["new_kpi_billing_to_date"]
+        new_kpi_client_project_count = request.form["new_kpi_client_project_count"]
+        
+        cur.execute("""
+            UPDATE clients 
+            SET 
+                client_name = %s, 
+                client_from_date = %s, 
+                kpi_avg_billable_rate = %s, 
+                kpi_billing_to_date = %s, 
+                kpi_client_project_count = %s 
+            WHERE 
+                client_id = %s
+        """, (
+            new_client_name,
+            new_client_from_date,
+            new_kpi_avg_billable_rate,
+            new_kpi_billing_to_date,
+            new_kpi_client_project_count,
+            client_id
+        ))
+        mysql.connection.commit()
+        cur.close()
+        
+        return redirect(url_for('show_clients'))
+    
+    # Fetch existing client details to pre-fill the edit form
+    cur.execute("SELECT * FROM clients WHERE client_id = %s", (client_id,))
+    client_data = cur.fetchone()
+    cur.close()
+    
+    return render_template('edit.html', client=client_data)
 
-# @app.route("/clients/<int:id>/clientaddress", methods=["GET"])
-# def get_client_address_by_client(id):
-#     data = data_fetch(
-#         """
-#     SELECT line1_number_building, line2_number_street, line3_area_locality, town_city, state_province, country_code
-#         FROM clients
-#         INNER JOIN client_addresses
-#         ON clients.client_id = client_addresses.client_id 
-#         INNER JOIN addresses
-#         ON client_addresses.address_id = addresses.address_id 
-#         WHERE clients.client_id = {}
-#     """.format(
-#             id
-#         )
-#     )
-#     return make_response(
-#         jsonify({"client_id": id, "count": len(data), "client's address": data}), 200
-#     )
+@app.route("/delete/<int:client_id>")
+def delete_client(client_id):
+    cur = mysql.connection.cursor()
+    
+    cur.execute("DELETE FROM clients WHERE client_id = %s", (client_id,))
+    mysql.connection.commit()
+    cur.close()
+    
+    return redirect(url_for('show_clients'))
 
 if __name__ == "__main__":
     app.run(debug=True)
