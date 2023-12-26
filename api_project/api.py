@@ -1,4 +1,4 @@
-from flask import Flask, make_response, jsonify, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
@@ -11,12 +11,24 @@ app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
 
-@app.route("/")
-def show_clients():
+def data_fetch(query):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM clients")
-    clients_data = cur.fetchall()
+    query = """
+        select * from clients"""
+
+    cur.execute(query)
+    data = cur.fetchall()
     cur.close()
+    return data
+
+@app.route("/")
+def home_page():
+    return render_template('home.html')
+
+
+@app.route("/clients", methods=["GET"])
+def show_clients():
+    clients_data = data_fetch("""select * from clients""")
     return render_template('clients.html', clients=clients_data)
 
 @app.route("/add")
@@ -32,7 +44,7 @@ def submit():
         kpi_billing_to_date = request.form["kpi_billing_to_date"]
         kpi_client_project_count = request.form["kpi_client_project_count"]
 
-        
+
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO clients (client_name, client_from_date, kpi_avg_billable_rate, kpi_billing_to_date, kpi_client_project_count) VALUES (%s, %s, %s, %s, %s)", (client_name, client_from_date, kpi_avg_billable_rate, kpi_billing_to_date, kpi_client_project_count))
         mysql.connection.commit()
