@@ -2,9 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
-app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_USER"] = "root"
-app.config["MYSQL_PASSWORD"] = "11082017"
+app.config["MYSQL_HOST"] = "localhost"          # host name
+app.config["MYSQL_USER"] = "root"               # username
+app.config["MYSQL_PASSWORD"] = "11082017"       # password
 app.config["MYSQL_DB"] = "employees_fees"
 
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
