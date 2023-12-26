@@ -104,6 +104,26 @@ def delete_client(client_id):
     
     return redirect(url_for('show_clients'))
 
+@app.route("/clients/<int:client_id>")
+def show_single_client(client_id):
+    cur = mysql.connection.cursor()
+
+    cur.execute("SELECT * FROM clients WHERE client_id = %s", (client_id,))
+    client_data = cur.fetchone()
+    cur.close()
+
+    return render_template('single_client.html', client=client_data)
+
+@app.route("/clients/<string:client_name>")
+def show_single_client_by_name(client_name):
+    cur = mysql.connection.cursor()
+
+    cur.execute("SELECT * FROM clients WHERE client_name = %s", (client_name,))
+    client_data = cur.fetchone()
+    cur.close()
+
+    return render_template('single_client.html', client=client_data)
+
 if __name__ == "__main__":
     app.run(debug=True)
 
